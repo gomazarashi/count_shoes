@@ -1,11 +1,11 @@
 import os 
 from os.path import join, dirname
 
-# imagesフォルダ内の画像ファイル名を取得
-def get_images_list():
-    # imagesフォルダのパスを取得
-    images_dir = join(dirname(__file__), "images")
-    # imagesフォルダ内のファイル名を取得
+# 与えられたフォルダ内の画像ファイル名を取得
+def get_images_list(folder_name):
+    # 画像ファイルが保存されているフォルダのパスを取得
+    images_dir = join(dirname(__file__), folder_name)
+    # 画像ファイル名のリストを取得
     images_list = os.listdir(images_dir)
     return images_list
 
