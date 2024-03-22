@@ -6,7 +6,7 @@ from get_images_list import get_images_list
 import shutil
 import asyncio
 
-dotenv_path = join(dirname(__file__), ".env")
+dotenv_path = join(dirname(__file__), ".env") # 環境変数を読み込む
 load_dotenv(dotenv_path)
 
 BOT_TOKEN = os.environ.get("TOKEN")
