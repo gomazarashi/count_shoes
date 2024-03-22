@@ -11,6 +11,16 @@ load_dotenv(dotenv_path)
 
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL")  # 環境変数からWEBHOOK_URLを取得
 
+def post_text_wh(content="メッセージ送信テスト"):
+    main_content = {"username": "bot", "content": content}
+
+    headers = {"Content-Type": "application/json"}  # ヘッダーの設定
+
+    response = requests.post(
+        WEBHOOK_URL, json.dumps(main_content), headers=headers
+    )  # メッセージを送信
+    return
+
 def post_image_wh(image_path,content="画像を送信します"):
     embeds = [
         {"image": {"url": image_path}},
