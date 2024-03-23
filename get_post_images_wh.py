@@ -5,6 +5,10 @@ from post_webhook import post_text_wh, post_image_wh
 from get_image import get_image
 import shutil
 from time import sleep
+import locale # ロケール設定用
+
+# ロケール設定
+locale.setlocale(locale.LC_ALL, 'ja_JP')
 
 def move_image(image):
     try:
