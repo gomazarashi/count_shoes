@@ -24,7 +24,7 @@ def post_image_wh(image_path):
     return
 
 def main():
-    image_path = "./posted_images/20240323_005544.jpg"
+    image_path = "./saved_images/20240324_003502.jpg"
     print(image_path)
     post_image_wh(image_path)
     
