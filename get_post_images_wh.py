@@ -16,7 +16,6 @@ def move_image(image):
 def main():
     post_text_wh("メッセージの送信を開始します")
     get_image()
-    sleep(5)
     images_list=get_images_list("saved_images")
     for image in images_list:
         post_image_wh(f"saved_images/{image}")
