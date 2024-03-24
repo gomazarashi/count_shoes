@@ -28,13 +28,15 @@ def post_images():
 
 
 def start_job():
-    post_text_wh("メッセージの送信を開始します")
+    post_text_wh("現在の時刻は"+datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")+"です")
+    post_text_wh("画像の送信を開始します")
     main_job()
     schedule.every(5).minutes.do(main_job)
 
 
 def end_job():
-    post_text_wh("メッセージの送信を終了します")
+    post_text_wh("現在の時刻は"+datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")+"です")
+    post_text_wh("画像の送信を終了します")
     for job in schedule.jobs:
         if "main_job" in str(job):
             schedule.cancel_job(job)
@@ -46,10 +48,11 @@ def end_job():
 
 #初回起動時に実行
 def first_time():
+    print("現在時刻: ", datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
     print("「分」の値が5の倍数になるまで待機します。")        
     while True:
         now = datetime.datetime.now()
-        if now.minute % 5 == 0:
+        if (now.minute % 5 == 0 and now.second == 0):
             print("これ以降、5分毎にメッセージを送信します。")
             start_job()
             break
