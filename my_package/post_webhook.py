@@ -15,7 +15,8 @@ def post_text_wh(content="メッセージ送信テスト"):
     discord.post(content=content)
     return
 
-def post_image_wh(image_path):
+def post_image_wh(from_folder,image):
+    image_path=from_folder+"/"+image
     discord.post(
     file={
         "file1": open(image_path, "rb"),
