@@ -1,3 +1,4 @@
 .env
 archives/get_post_images.py
 saved_images/image.jpg
+mypackage/__pycache__/*
