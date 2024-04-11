@@ -19,8 +19,8 @@ def move_image(from_folder, to_folder, image):
         print(f"画像の移動中にエラーが発生しました: {e}")
 
 def post_images():
-    get_image()
-    images_list = get_filename_list("./saved_images") 
+    get_image("saved_images")
+    images_list = get_filename_list("saved_images") 
     for image in images_list:
         post_image_wh("saved_images",image)
         sleep(1)
