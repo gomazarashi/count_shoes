@@ -5,7 +5,6 @@ from my_package.post_webhook import post_text_wh, post_image_wh
 from my_package.count_shoes import count_shoes_in_image
 import shutil  # ファイル移動用
 from time import sleep  # スリープ用
-import locale  # ロケール設定用
 import datetime  # 現在時刻取得用
 import schedule  # スケジュール実行用
 from PIL import Image
