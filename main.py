@@ -8,6 +8,8 @@ from time import sleep # スリープ用
 import locale  # ロケール設定用
 import datetime  # 現在時刻取得用
 import schedule  # スケジュール実行用
+from PIL import Image
+
 
 # ロケール設定
 locale.setlocale(locale.LC_ALL, "ja_JP")
@@ -22,7 +24,10 @@ def post_images():
     get_image("saved_images")
     images_list = get_filename_list("saved_images") 
     for image in images_list:
-        post_image_wh("saved_images",image)
+        annotated_image,num_shoes=count_shoes_in_image("saved_images/"+image)
+        Image.fromarray(annotated_image).save("annotated_images/"+image)
+        post_image_wh("annotated_images",image)
+        post_text_wh("この画像には"+str(num_shoes)+"つの靴が写っています")
         sleep(1)
         move_image("saved_images","posted_images",image)
 
