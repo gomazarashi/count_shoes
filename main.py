@@ -10,11 +10,6 @@ import datetime  # 現在時刻取得用
 import schedule  # スケジュール実行用
 from PIL import Image
 
-
-# ロケール設定
-locale.setlocale(locale.LC_ALL, "ja_JP")
-
-
 def move_image(from_folder, to_folder, image):
     try:
         shutil.move(from_folder + "/" + image, to_folder + "/" + image)
