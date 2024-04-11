@@ -2,7 +2,7 @@ import os
 from my_package.get_filename_list import get_filename_list
 from my_package.get_image import get_image
 from my_package.post_webhook import post_text_wh, post_image_wh
-from my_package.count_shoes import count_shoes_in_image
+from my_package.count_shoes import count_shoes_in_image_yolo as cs_yolo
 import shutil  # ファイル移動用
 from time import sleep  # スリープ用
 import datetime  # 現在時刻取得用
@@ -20,7 +20,7 @@ def post_images():
     get_image("saved_images")
     images_list = get_filename_list("saved_images")
     for image in images_list:
-        """annotated_image,num_shoes=count_shoes_in_image("saved_images/"+image)
+        """annotated_image,num_shoes=cs_yolo("saved_images/"+image)
         Image.fromarray(annotated_image).save("annotated_images/"+image)
         post_image_wh("annotated_images",image)
         post_text_wh("この画像には"+str(num_shoes)+"つの靴が写っています")"""
