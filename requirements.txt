@@ -1,0 +1,6 @@
+schedule==1.1.0
+opencv-python==4.8.1.78
+python-dotenv==1.0.0
+discordwebhook==1.0.3
+roboflow==1.1.26
+supervision==0.19.0
