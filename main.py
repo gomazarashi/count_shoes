@@ -2,6 +2,7 @@ import os
 from my_package.get_filename_list import get_filename_list 
 from my_package.get_image import get_image 
 from my_package.post_webhook import post_text_wh, post_image_wh
+from my_package.count_shoes import count_shoes_in_image
 import shutil # ファイル移動用
 from time import sleep # スリープ用
 import locale  # ロケール設定用
@@ -11,19 +12,19 @@ import schedule  # スケジュール実行用
 # ロケール設定
 locale.setlocale(locale.LC_ALL, "ja_JP")
 
-def move_image(image):
+def move_image(from_folder, to_folder, image):
     try:
-        shutil.move(f"saved_images/{image}", f"posted_images/{image}")
+        shutil.move(from_folder+"/"+image, to_folder+"/"+image)
     except Exception as e:
         print(f"画像の移動中にエラーが発生しました: {e}")
 
 def post_images():
     get_image()
-    images_list = get_filename_list("./saved_images")
+    images_list = get_filename_list("./saved_images") 
     for image in images_list:
-        post_image_wh("saved_images/"+image)
+        post_image_wh("saved_images",image)
         sleep(1)
-        move_image(image)
+        move_image("saved_images","posted_images",image)
 
 
 def start_job():
