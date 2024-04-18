@@ -26,7 +26,7 @@ def post_images():
 
 def start_job():
     post_text_wh(
-        "現在の時刻は" + datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S") + "です"
+        f"現在の時刻は{datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")}です"
     )
     post_text_wh("画像の送信を開始します")
     main_job()
@@ -35,7 +35,7 @@ def start_job():
 
 def end_job():
     post_text_wh(
-        "現在の時刻は" + datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S") + "です"
+        f"現在の時刻は{datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")}です"
     )
     post_text_wh("画像の送信を終了します")
     for job in schedule.jobs:
@@ -49,7 +49,7 @@ def end_job():
 
 # 初回起動時に実行
 def first_time():
-    print("現在時刻: ", datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
+    print(f"現在時刻: {datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')}")
     print("「分」の値が5の倍数になるまで待機します。")
     while True:
         now = datetime.datetime.now()
