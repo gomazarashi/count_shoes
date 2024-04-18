@@ -5,7 +5,6 @@ from my_package.post_webhook import post_text_wh, post_image_wh
 import shutil  # ファイル移動用
 from time import sleep  # スリープ用
 from datetime import datetime  # 現在時刻取得用
-from PIL import Image
 
 
 def move_image(from_folder, to_folder, image):
