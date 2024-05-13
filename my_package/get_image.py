@@ -7,7 +7,7 @@ DEV_ID = 0
 
 # 解像度の設定
 WIDTH = 1920
-HEIGHT = 1080
+HEIGHT = 1440
 
 def get_image(save_folder):
     cap = cv2.VideoCapture(DEV_ID)
