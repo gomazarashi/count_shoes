@@ -30,7 +30,7 @@ def get_image(save_folder):
     return 
 
 if __name__ == "__main__":
-    get_image()
+    get_image("saved_images")
     print("画像を保存しました")
     print("saved_imagesフォルダを確認してください")
     
