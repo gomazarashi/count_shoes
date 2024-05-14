@@ -44,19 +44,37 @@ def end_job():
 
 def main():
     now = datetime.now()
-    # 月曜日～土曜日の8:30あるいは日曜日の9:30に実行(画像送信開始)
-    if ((now.weekday() < 6) and (now.hour == 8 and now.minute == 30)) or (
-        (now.weekday() == 6) and (now.hour == 9 and now.minute == 30)
-    ):
-        start_job()
-    # 月曜日～土曜日の22:00あるいは日曜日の18:00に実行(画像送信終了)
-    elif ((now.weekday() < 6) and (now.hour == 22 and now.minute == 0)) or (
-        (now.weekday() == 6) and (now.hour == 18 and now.minute == 0)
-    ):
-        end_job()
-    # それ以外の時間は通常の画像送信
+    weekday = now.weekday()
+    # 月曜日～土曜日
+    if weekday < 6:
+        # 稼働時間外
+        if now < datetime.strptime("08:30:00", "%H:%M:%S") or now > datetime.strptime("22:00:00", "%H:%M:%S"):
+            pass
+        # 稼働開始時刻
+        elif now == datetime.strptime("08:30:00", "%H:%M:%S"):
+            start_job()
+        # 稼働終了時刻
+        elif now == datetime.strptime("22:00:00", "%H:%M:%S"):
+            end_job()
+        # 通常の画像送信
+        else:
+            post_images()
+    # 日曜日
     else:
-        post_images()
+        # 稼働時間外
+        if now < datetime.strptime("09:30:00", "%H:%M:%S") or now > datetime.strptime(
+            "18:00:00", "%H:%M:%S"
+        ):
+            pass
+        # 稼働開始時刻
+        elif now == datetime.strptime("09:30:00", "%H:%M:%S"):
+            start_job()
+        # 稼働終了時刻
+        elif now == datetime.strptime("18:00:00", "%H:%M:%S"):
+            end_job()
+        # 通常の画像送信
+        else:
+            post_images()
 
 
 if __name__ == "__main__":
