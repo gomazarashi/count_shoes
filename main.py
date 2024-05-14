@@ -43,6 +43,9 @@ def end_job():
 
 
 def main():
+    # saved_imagesフォルダが存在しなければ作成
+    if not os.path.exists("saved_images"):
+        os.mkdir("saved_images")
     now = datetime.now()
     weekday = now.weekday()
     # 月曜日～土曜日
