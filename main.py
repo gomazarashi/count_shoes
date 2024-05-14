@@ -48,8 +48,13 @@ def main():
     # 月曜日～土曜日
     if weekday < 6:
         # 稼働時間外
-        if now < datetime.strptime("08:30:00", "%H:%M:%S") or now > datetime.strptime("22:00:00", "%H:%M:%S"):
-            pass
+        if (
+            (datetime.strptime("00:00:00", "%H:%M:%S") < now)
+            and (now < datetime.strptime("08:30:00", "%H:%M:%S"))
+            or (datetime.strptime("22:00:00", "%H:%M:%S") < now)
+            and (now < datetime.strptime("23:59:59", "%H:%M:%S"))
+        ):
+            print("稼働時間外です")
         # 稼働開始時刻
         elif now == datetime.strptime("08:30:00", "%H:%M:%S"):
             start_job()
@@ -62,10 +67,13 @@ def main():
     # 日曜日
     else:
         # 稼働時間外
-        if now < datetime.strptime("09:30:00", "%H:%M:%S") or now > datetime.strptime(
-            "18:00:00", "%H:%M:%S"
+        if (
+            (datetime.strptime("00:00:00", "%H:%M:%S") < now)
+            and (now < datetime.strptime("09:30:00", "%H:%M:%S"))
+            or (datetime.strptime("18:00:00", "%H:%M:%S") < now)
+            and (now < datetime.strptime("23:59:59", "%H:%M:%S"))
         ):
-            pass
+            print("稼働時間外です")
         # 稼働開始時刻
         elif now == datetime.strptime("09:30:00", "%H:%M:%S"):
             start_job()
