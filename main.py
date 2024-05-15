@@ -46,42 +46,43 @@ def main():
     # saved_imagesフォルダが存在しなければ作成
     if not os.path.exists("saved_images"):
         os.mkdir("saved_images")
-    now = datetime.now()
+    # posted_imagesフォルダが存在しなければ作成
+    if not os.path.exists("posted_images"):
+        os.mkdir("posted_images")
+    now = datetime.now().replace(second=0, microsecond=0)  # 秒数は利用しないので0にする
     weekday = now.weekday()
     # 月曜日～土曜日
     if weekday < 6:
+        # 開始時刻
+        start_time = now.replace(hour=8, minute=30)
+        # 終了時刻
+        end_time = now.replace(hour=22, minute=0)
         # 稼働時間外
-        if (
-            (datetime.strptime("00:00:00", "%H:%M:%S") < now)
-            and (now < datetime.strptime("08:30:00", "%H:%M:%S"))
-            or (datetime.strptime("22:00:00", "%H:%M:%S") < now)
-            and (now < datetime.strptime("23:59:59", "%H:%M:%S"))
-        ):
+        if (now < start_time) or (end_time < now):
             print("稼働時間外です")
         # 稼働開始時刻
-        elif now == datetime.strptime("08:30:00", "%H:%M:%S"):
+        elif now == start_time:
             start_job()
         # 稼働終了時刻
-        elif now == datetime.strptime("22:00:00", "%H:%M:%S"):
+        elif now == end_time:
             end_job()
         # 通常の画像送信
         else:
             post_images()
     # 日曜日
     else:
+        # 開始時刻
+        start_time = now.replace(hour=9, minute=30)
+        # 終了時刻
+        end_time = now.replace(hour=18, minute=0)
         # 稼働時間外
-        if (
-            (datetime.strptime("00:00:00", "%H:%M:%S") < now)
-            and (now < datetime.strptime("09:30:00", "%H:%M:%S"))
-            or (datetime.strptime("18:00:00", "%H:%M:%S") < now)
-            and (now < datetime.strptime("23:59:59", "%H:%M:%S"))
-        ):
+        if (now < start_time) or (end_time < now):
             print("稼働時間外です")
         # 稼働開始時刻
-        elif now == datetime.strptime("09:30:00", "%H:%M:%S"):
+        elif now == start_time:
             start_job()
         # 稼働終了時刻
-        elif now == datetime.strptime("18:00:00", "%H:%M:%S"):
+        elif now == end_time:
             end_job()
         # 通常の画像送信
         else:
