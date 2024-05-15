@@ -51,42 +51,32 @@ def main():
         os.mkdir("posted_images")
     now = datetime.now().replace(second=0, microsecond=0)  # 秒数は利用しないので0にする
     weekday = now.weekday()
+    # 稼働時間の設定
     # 月曜日～土曜日
     if weekday < 6:
         # 開始時刻
         start_time = now.replace(hour=8, minute=30)
         # 終了時刻
         end_time = now.replace(hour=22, minute=0)
-        # 稼働時間外
-        if (now < start_time) or (end_time < now):
-            print("稼働時間外です")
-        # 稼働開始時刻
-        elif now == start_time:
-            start_job()
-        # 稼働終了時刻
-        elif now == end_time:
-            end_job()
-        # 通常の画像送信
-        else:
-            post_images()
     # 日曜日
     else:
         # 開始時刻
         start_time = now.replace(hour=9, minute=30)
         # 終了時刻
         end_time = now.replace(hour=18, minute=0)
-        # 稼働時間外
-        if (now < start_time) or (end_time < now):
-            print("稼働時間外です")
-        # 稼働開始時刻
-        elif now == start_time:
-            start_job()
-        # 稼働終了時刻
-        elif now == end_time:
-            end_job()
-        # 通常の画像送信
-        else:
-            post_images()
+    
+    # 稼働時間外
+    if (now < start_time) or (end_time < now):
+        print("稼働時間外です")
+    # 稼働開始時刻
+    elif now == start_time:
+        start_job()
+    # 稼働終了時刻
+    elif now == end_time:
+        end_job()
+    # 通常の画像送信
+    else:
+        post_images()
 
 
 if __name__ == "__main__":
