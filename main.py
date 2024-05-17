@@ -20,14 +20,14 @@ def post_current_time():
 
 
 def post_images():
-    get_image("saved_images")
-    images_list = get_filename_list("saved_images")
+    get_image("shotten_images")
+    images_list = get_filename_list("shotten_images")
     post_current_time()
 
     for image in images_list:
-        post_image_wh("saved_images", image)
+        post_image_wh("shotten_images", image)
         sleep(1)
-        move_image("saved_images", "posted_images", image)
+        move_image("shotten_images", "posted_images", image)
 
 
 def start_job():
@@ -43,9 +43,9 @@ def end_job():
 
 
 def main():
-    # saved_imagesフォルダが存在しなければ作成
-    if not os.path.exists("saved_images"):
-        os.mkdir("saved_images")
+    # shotten_imagesフォルダが存在しなければ作成
+    if not os.path.exists("shotten_images"):
+        os.mkdir("shotten_images")
     # posted_imagesフォルダが存在しなければ作成
     if not os.path.exists("posted_images"):
         os.mkdir("posted_images")
