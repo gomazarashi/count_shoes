@@ -1,5 +1,6 @@
 #受け取った画像にmask処理を行う
 import cv2
+import os 
 
 def mask(img_path:str,mask_path:str)->str:
     #画像の読み込み
@@ -8,7 +9,9 @@ def mask(img_path:str,mask_path:str)->str:
     #mask処理
     img_masked=cv2.bitwise_and(img,img,mask=mask)
     #画像の保存
-    cv2.imwrite(f'{img_path.removesuffix(".png")}_masked.png',img_masked)
+    if not os.path.exists('./masked_images'):
+        os.mkdir('./masked_images')
+    cv2.imwrite(f'./masked_images/{img_path.removesuffix(".png")}_masked.png',img_masked)
     
 if __name__ == '__main__':
     mask('shoes_2.png','mask.png')
