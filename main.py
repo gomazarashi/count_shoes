@@ -2,6 +2,7 @@ import os
 from my_package.get_filename_list import get_filename_list
 from my_package.get_image import get_image
 from my_package.post_webhook import post_text_wh, post_image_wh
+from my_package.mask import mask
 import shutil  # ファイル移動用
 from time import sleep  # スリープ用
 from datetime import datetime  # 現在時刻取得用
@@ -26,6 +27,10 @@ def post_images():
 
     for image in images_list:
         post_image_wh("shotten_images", image)
+        try:
+            mask("shotten_images", image, "./my_package/mask.png")
+        except Exception as e:
+            print(f"mask処理中にエラーが発生しました: {e}")
         sleep(1)
         move_image("shotten_images", "posted_images", image)
 
@@ -64,7 +69,7 @@ def main():
         start_time = now.replace(hour=9, minute=30)
         # 終了時刻
         end_time = now.replace(hour=18, minute=0)
-    
+
     # 稼働時間外
     if (now < start_time) or (end_time < now):
         print("稼働時間外です")
