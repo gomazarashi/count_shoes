@@ -3,17 +3,19 @@ import cv2
 import os
 
 
-def mask(img_path: str, mask_path: str) -> str:
+def mask(img_dir: str, img_name: str, mask_path: str) -> str:
     # 画像の読み込み
-    img = cv2.imread(img_path)
+    img = cv2.imread(img_dir + "/" + img_name)
     mask = cv2.imread(mask_path)
     # mask処理
     img_masked = cv2.bitwise_and(img, mask)
+    cv2.imshow("masked", img_masked)
+    cv2.waitKey(0)
     # 画像の保存
     if not os.path.exists("./masked_images"):
         os.mkdir("masked_images")
     cv2.imwrite(
-        f'./masked_images/{img_path.removesuffix(".png")}_masked.png', img_masked
+        f'./masked_images/{img_name.removesuffix(".png")}_masked.png', img_masked
     )
 
 
