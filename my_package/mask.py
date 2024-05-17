@@ -9,8 +9,6 @@ def mask(img_dir: str, img_name: str, mask_path: str) -> str:
     mask = cv2.imread(mask_path)
     # mask処理
     img_masked = cv2.bitwise_and(img, mask)
-    cv2.imshow("masked", img_masked)
-    cv2.waitKey(0)
     # 画像の保存
     if not os.path.exists("./masked_images"):
         os.mkdir("masked_images")
