@@ -1,6 +1,5 @@
 #受け取った画像にmask処理を行う
 import cv2
-import matplotlib as plt
 
 def mask(img_path:str,mask_path:str)->str:
     #画像の読み込み
