@@ -13,7 +13,7 @@ def mask(img_dir: str, img_name: str, mask_path: str) -> str:
     if not os.path.exists("./masked_images"):
         os.mkdir("masked_images")
     cv2.imwrite(
-        f'./masked_images/{img_name.removesuffix(".png")}_masked.png', img_masked
+        f'./masked_images/{img_name}', img_masked
     )
 
 
