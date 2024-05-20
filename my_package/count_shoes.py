@@ -1,41 +1,68 @@
-#RoboflowのAPIを利用して、靴を認識した際の画像と靴の数を返すプログラム
-from dotenv import load_dotenv  # 環境変数を読み込むためのライブラリ
-import os
-from os.path import join, dirname  # ファイルのパスを扱うためのライブラリ
-
-from roboflow import Roboflow
-import supervision as sv
 import cv2
-from PIL import Image
+import numpy as np
 
-dotenv_path = join(dirname(__file__), "../.env")  # 環境変数を読み込む
-load_dotenv(dotenv_path)
 
-ROBOFLOW_API_KEY=os.environ.get("ROBOFLOW_API_KEY")
+def count_shoes(path: str) -> bool:
+    # 画像を読み込む
+    img = cv2.imread(path)
+    # 画像をグレースケールに変換
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # しきい値を設定
+    canny_low = 25
+    canny_high = 100
+    # エッジ検出
+    img_canny = cv2.Canny(gray, canny_low, canny_high)
 
-rf = Roboflow(api_key=ROBOFLOW_API_KEY)
-project = rf.workspace().project("amr_shoes") 
-model = project.version(2).model 
+    # 局所的にしきい値を決定し二値化
+    img_binary = cv2.adaptiveThreshold(
+        img_canny, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 5, 2
+    )
 
-def count_shoes_in_image(path: str) -> tuple:
-    result = model.predict(path, confidence=40, overlap=80).json() #confidenceは信頼度、overlapは重複度
-    labels = [item["class"] for item in result["predictions"]]
-    detections = sv.Detections.from_inference(result)
-    detections = detections[detections.class_id == 0]
-    label_anotator = sv.LabelAnnotator()
-    box_annotator = sv.BoundingBoxAnnotator()
-    
-    image=cv2.imread(path)
-    
-    annotated_image = box_annotator.annotate(scene=image, detections=detections)
-    
-    annotated_image=label_anotator.annotate(scene=annotated_image, detections=detections, labels=labels)
-    
-    #靴の数(1足につき2)
-    num_shoes = len(detections)
-    return annotated_image, num_shoes
+    # オープニング処理の回数を設定
+    iterations = 2
+
+    # カーネル
+    kernel = np.array(
+        [
+            [0, 1, 0],
+            [1, 1, 1],
+            [0, 1, 0],
+        ],
+        np.uint8,
+    )
+
+    # オープニング処理
+    img_opening = cv2.morphologyEx(
+        img_binary, cv2.MORPH_OPEN, kernel, iterations=iterations
+    )
+
+    # 白黒反転
+    img_opening = cv2.bitwise_not(img_opening)
+
+    # 輪郭抽出
+    contours, _ = cv2.findContours(
+        img_opening, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
+    )
+
+    # 一定範囲の面積の輪郭のみを抽出
+    min_area = 25000
+    contours = [cnt for cnt in contours if cv2.contourArea(cnt) > min_area]
+
+    max_area = 100000
+    contours = [cnt for cnt in contours if cv2.contourArea(cnt) < max_area]
+
+
+    # 二値化画像、オープニング画像、輪郭画像を表示
+    if len(contours) > 0:
+        # 靴がある場合
+        return True
+    else:
+        # 靴がない場合
+        return False
+
 
 if __name__ == "__main__":
-    annotated_image,num_shoes = count_shoes_in_image("image.jpg")
-    Image.fromarray(annotated_image).save("annotated_image.jpg")
-    print(num_shoes)
+    if count_shoes("shoes.png"):
+        print("部室に人がいます")
+    else:
+        print("部室に人はいません")
