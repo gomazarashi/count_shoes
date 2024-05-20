@@ -3,6 +3,7 @@ from my_package.get_filename_list import get_filename_list
 from my_package.get_image import get_image
 from my_package.post_webhook import post_text_wh, post_image_wh
 from my_package.mask import mask
+from my_package.count_shoes import count_shoes
 import shutil  # ファイル移動用
 from time import sleep  # スリープ用
 from datetime import datetime  # 現在時刻取得用
@@ -36,6 +37,12 @@ def process_images():
             print(f"mask処理中にエラーが発生しました: {e}")
         sleep(1)
         move_image("shotten_images", "posted_images", image)
+    count_shoes_result = count_shoes("masked_images/" + image)
+    if count_shoes_result:
+        post_text_wh("部室に人がいます")
+    else:
+        post_text_wh("部室に人はいません")
+    
 
 
 def start_job():
