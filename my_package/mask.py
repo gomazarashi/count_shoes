@@ -18,4 +18,4 @@ def mask(img_dir: str, img_name: str, mask_path: str) -> str:
 
 
 if __name__ == "__main__":
-    mask("./","001.png", "mask.png")
+    mask("shoes_2.png", "mask.png")
