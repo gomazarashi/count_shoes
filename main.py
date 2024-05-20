@@ -1,7 +1,7 @@
 import os
 from my_package.get_filename_list import get_filename_list
 from my_package.get_image import get_image
-from my_package.post_webhook import post_text_wh, post_image_wh
+from my_package.post_webhook import post_text_discord, post_image_discord
 from my_package.mask import mask
 from my_package.count_shoes import count_shoes
 import shutil  # ファイル移動用
@@ -18,7 +18,7 @@ def move_image(from_folder, to_folder, image):
 
 def post_current_time():
     current_time = datetime.now().strftime("%H:%M:%S")
-    post_text_wh(f"現在の時刻は{current_time}です")
+    post_text_discord(f"現在の時刻は{current_time}です")
 
 
 def process_images():
@@ -30,7 +30,7 @@ def process_images():
     post_current_time()
 
     for image in images_list:
-        post_image_wh("shotten_images", image)
+        post_image_discord("shotten_images", image)
         try:
             mask("shotten_images", image, "./my_package/mask.png")
         except Exception as e:
@@ -39,19 +39,19 @@ def process_images():
         move_image("shotten_images", "posted_images", image)
     count_shoes_result = count_shoes("masked_images/" + image)
     if count_shoes_result:
-        post_text_wh("部室に人がいます")
+        post_text_discord("部室に人がいます")
     else:
-        post_text_wh("部室に人はいません")
+        post_text_discord("部室に人はいません")
     
 
 
 def start_job():
-    post_text_wh("画像の送信を開始します")
+    post_text_discord("画像の送信を開始します")
     process_images()
 
 
 def end_job():
-    post_text_wh("画像の送信を終了します")
+    post_text_discord("画像の送信を終了します")
     # posted_imagesフォルダの画像を削除
     shutil.rmtree("posted_images")
     os.mkdir("posted_images")
