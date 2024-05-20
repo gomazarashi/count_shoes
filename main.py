@@ -4,7 +4,7 @@ from my_package.get_image import get_image
 from my_package.post_webhook import (
     post_text_discord,
     post_image_discord,
-    #post_text_slack,
+    post_text_slack,
 )
 from my_package.mask import mask
 from my_package.count_shoes import count_shoes
@@ -23,7 +23,7 @@ def move_image(from_folder, to_folder, image):
 def post_current_time():
     current_time = datetime.now().strftime("%H:%M:%S")
     post_text_discord(f"現在の時刻は{current_time}です")
-    #post_text_slack(f"現在の時刻は{current_time}です")
+    post_text_slack("部室内人数通知システム",f"現在の時刻は{current_time}です")
 
 
 def process_images():
@@ -45,10 +45,10 @@ def process_images():
     count_shoes_result = count_shoes("masked_images/" + image)
     if count_shoes_result:
         post_text_discord("部室に人がいます")
-        #post_text_slack("部室に人がいます")
+        post_text_slack("部室内人数通知システム","部室に人がいます")
     else:
         post_text_discord("部室に人はいません")
-        #post_text_slack("部室に人はいません")
+        post_text_slack("部室内人数通知システム","部室に人はいません")
 
 
 def start_job():
