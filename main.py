@@ -20,7 +20,7 @@ def post_current_time():
     post_text_wh(f"現在の時刻は{current_time}です")
 
 
-def post_images():
+def process_images():
     get_image("shotten_images")
     images_list = get_filename_list("shotten_images")
     post_current_time()
@@ -37,7 +37,7 @@ def post_images():
 
 def start_job():
     post_text_wh("画像の送信を開始します")
-    post_images()
+    process_images()
 
 
 def end_job():
@@ -81,7 +81,7 @@ def main():
         end_job()
     # 通常の画像送信
     else:
-        post_images()
+        process_images()
 
 
 if __name__ == "__main__":
