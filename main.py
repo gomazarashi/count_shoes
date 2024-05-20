@@ -21,8 +21,11 @@ def post_current_time():
 
 
 def process_images():
+    #画像を撮影してshotten_imagesフォルダに保存
     get_image("shotten_images")
+    #shotten_imagesフォルダ内の画像のファイル名を取得
     images_list = get_filename_list("shotten_images")
+    #discordに現在時刻を送信
     post_current_time()
 
     for image in images_list:
