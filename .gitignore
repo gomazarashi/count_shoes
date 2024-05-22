@@ -1,9 +1,4 @@
 .env
-archives/get_post_images.py
-saved_images/image.jpg
-my_package/__pycache__
-カメラ設置告知.pdf
-カメラ設置告知.pptx
-get_image.timer
-ラズパイ上パス.txt
-get_image.sh
+my_package/__pycache__/
+temp_resources/
+raspi_settings/
