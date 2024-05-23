@@ -59,9 +59,6 @@ def start_job():
 def end_job():
     process_images()
     post_text_discord("画像の送信を終了します")
-    # posted_imagesフォルダの画像を削除
-    shutil.rmtree("posted_images")
-    os.mkdir("posted_images")
 
 
 def main():
