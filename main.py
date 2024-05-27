@@ -49,6 +49,8 @@ def process_images():
     else:
         post_text_discord("部室に人はいません")
         post_text_slack("部室内人数通知システム","部室に人はいません")
+    #マスク済み画像を削除
+    os.remove("masked_images/" + image)
 
 
 def start_job():
