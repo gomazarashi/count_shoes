@@ -6,7 +6,7 @@ from discordwebhook import Discord
 import requests
 import json
 
-dotenv_path = join(dirname(__file__), "../.env")  # 環境変数を読み込む
+dotenv_path = join(dirname(__file__), "../../env_dir/.env")  # 環境変数を読み込む
 load_dotenv(dotenv_path)
 
 # 環境変数からDISCORD_WEBHOOK_URLを取得
@@ -34,7 +34,7 @@ def post_image_discord(from_folder, image):
     return
 
 
-def post_text_slack(user_name, content="メッセージ送信テスト"):
+def post_text_slack(user_name="テスト", content="メッセージ送信テスト"):
     post_json = {
         "username": user_name,
         "text": content,
@@ -43,9 +43,6 @@ def post_text_slack(user_name, content="メッセージ送信テスト"):
 
 
 def main():
-    image_path = "saved_images/image.jpg"
-    print(image_path)
-    post_image_discord(image_path)
     post_text_slack()
 
 
