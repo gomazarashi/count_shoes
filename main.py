@@ -35,7 +35,7 @@ def process_images():
 
     for image in images_list:
         post_image_discord("shotten_images", image)
-    count_shoes_result = count_shoes("masked_images/" + image)
+    count_shoes_result = count_shoes("shotten_images/" + image)
     move_image("shotten_images", "posted_images", image)
     if count_shoes_result:
         post_text_discord("部室に人がいます")
@@ -43,9 +43,6 @@ def process_images():
     else:
         post_text_discord("部室に人はいません")
         post_text_slack("部室内人数通知システム","部室に人はいません")
-    #マスク済み画像を削除
-    os.remove("masked_images/" + image)
-
 
 def start_job():
     post_text_discord("画像の送信を開始します")
