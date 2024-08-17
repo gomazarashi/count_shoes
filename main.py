@@ -35,13 +35,8 @@ def process_images():
 
     for image in images_list:
         post_image_discord("shotten_images", image)
-        try:
-            mask("shotten_images", image, "./my_package/mask.png")
-        except Exception as e:
-            print(f"mask処理中にエラーが発生しました: {e}")
-        sleep(1)
-        move_image("shotten_images", "posted_images", image)
     count_shoes_result = count_shoes("masked_images/" + image)
+    move_image("shotten_images", "posted_images", image)
     if count_shoes_result:
         post_text_discord("部室に人がいます")
         post_text_slack("部室内人数通知システム","部室に人がいます")
