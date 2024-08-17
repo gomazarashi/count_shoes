@@ -22,7 +22,7 @@ def move_image(from_folder, to_folder, image):
 def post_current_time():
     current_time = datetime.now().strftime("%H:%M:%S")
     post_text_discord(f"現在の時刻は{current_time}です")
-    post_text_slack("部室内人数通知システム",f"現在の時刻は{current_time}です")
+    post_text_slack("部室内人数通知システム", f"現在の時刻は{current_time}です")
 
 
 def process_images():
@@ -39,10 +39,11 @@ def process_images():
     move_image("shotten_images", "posted_images", image)
     if count_shoes_result:
         post_text_discord("部室に人がいます")
-        post_text_slack("部室内人数通知システム","部室に人がいます")
+        post_text_slack("部室内人数通知システム", "部室に人がいます")
     else:
         post_text_discord("部室に人はいません")
-        post_text_slack("部室内人数通知システム","部室に人はいません")
+        post_text_slack("部室内人数通知システム", "部室に人はいません")
+
 
 def start_job():
     post_text_discord("画像の送信を開始します")
@@ -62,7 +63,7 @@ def main():
     if not os.path.exists("posted_images"):
         os.mkdir("posted_images")
     now = datetime.now().replace(second=0, microsecond=0)  # 秒数は利用しないので0にする
-    weekday = now.weekday() #月曜0始まり 日曜6終わり
+    weekday = now.weekday()  # 月曜0始まり 日曜6終わり
     # 稼働時間の設定
     # 月曜日～土曜日
     if weekday < 6:
