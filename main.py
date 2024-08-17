@@ -6,7 +6,6 @@ from my_package.post_webhook import (
     post_image_discord,
     post_text_slack,
 )
-from my_package.mask import mask
 from my_package.count_shoes import count_shoes
 import shutil  # ファイル移動用
 from time import sleep  # スリープ用
