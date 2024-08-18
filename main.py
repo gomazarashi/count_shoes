@@ -6,7 +6,7 @@ from my_package.post_webhook import (
     post_image_discord,
     post_text_slack,
 )
-from my_package.count_shoes import count_shoes
+from my_package.count_heads import count_heads
 import shutil  # ファイル移動用
 from time import sleep  # スリープ用
 from datetime import datetime  # 現在時刻取得用
@@ -35,9 +35,9 @@ def process_images():
 
     for image in images_list:
         post_image_discord("shotten_images", image)
-    count_shoes_result = count_shoes("shotten_images/" + image)
+    count_heads_result = count_heads("shotten_images/" + image)
     move_image("shotten_images", "posted_images", image)
-    if count_shoes_result:
+    if count_heads_result:
         post_text_discord("部室に人がいます")
         post_text_slack("部室内人数通知システム", "部室に人がいます")
     else:
