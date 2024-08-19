@@ -55,13 +55,17 @@ def process_images() -> None:
 
 
 def start_job() -> None:
-    post_text_discord("画像の送信を開始します")
+    with open("./version.txt") as f:
+        version = f.read()
+    post_text_discord(f"現在のバージョンは{version}です\n画像の送信を開始します")
+    post_text_slack("部室内人数通知システム", f"現在のバージョンは{version}です\n画像の送信を開始します")
     process_images()
 
 
 def end_job() -> None:
     process_images()
     post_text_discord("画像の送信を終了します")
+    post_text_slack("部室内人数通知システム", "画像の送信を終了します")
 
 
 def main() -> None:
