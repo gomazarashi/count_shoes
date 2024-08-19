@@ -45,7 +45,7 @@ def process_images():
     image = images_list[0]
 
     post_image_discord("shotten_images", image)
-    count_heads_result = count_heads("shotten_images/" + image)
+    count_heads_result = count_heads("shotten_images/" + image, "./my_package/best.pt")
     move_image("shotten_images", "posted_images", image)
 
     post_text_discord(f"部室内の人数は{count_heads_result}人です")
