@@ -26,23 +26,32 @@ def post_current_time():
 
 
 def process_images():
+    # shotten_imagesディレクトリが存在する場合は中身ごと削除
+    if os.path.exists("shotten_images/"):
+        shutil.rmtree("shotten_images/")
+
+    # shotten_imagesディレクトリを作成
+    os.mkdir("shotten_images")
+
     # 画像を撮影してshotten_imagesフォルダに保存
     get_image("shotten_images")
+
     # shotten_imagesフォルダ内の画像のファイル名を取得
     images_list = get_filename_list("shotten_images")
+
     # discordに現在時刻を送信
     post_current_time()
 
-    for image in images_list:
-        post_image_discord("shotten_images", image)
+    image = images_list[0]
+
+    post_image_discord("shotten_images", image)
     count_heads_result = count_heads("shotten_images/" + image)
     move_image("shotten_images", "posted_images", image)
-    if count_heads_result:
-        post_text_discord("部室に人がいます")
-        post_text_slack("部室内人数通知システム", "部室に人がいます")
-    else:
-        post_text_discord("部室に人はいません")
-        post_text_slack("部室内人数通知システム", "部室に人はいません")
+
+    post_text_discord(f"部室内の人数は{count_heads_result}人です")
+    post_text_slack(
+        "部室内人数通知システム", f"部室内の人数は{count_heads_result}人です"
+    )
 
 
 def start_job():
