@@ -12,20 +12,20 @@ from time import sleep  # スリープ用
 from datetime import datetime  # 現在時刻取得用
 
 
-def move_image(from_folder, to_folder, image):
+def move_image(from_folder: str, to_folder: str, image: str) -> None:
     try:
         shutil.move(from_folder + "/" + image, to_folder + "/" + image)
     except Exception as e:
         print(f"画像の移動中にエラーが発生しました: {e}")
 
 
-def post_current_time():
+def post_current_time() -> None:
     current_time = datetime.now().strftime("%H:%M:%S")
     post_text_discord(f"現在の時刻は{current_time}です")
     post_text_slack("部室内人数通知システム", f"現在の時刻は{current_time}です")
 
 
-def process_images():
+def process_images() -> None:
     # shotten_imagesディレクトリが存在する場合は中身ごと削除
     if os.path.exists("shotten_images/"):
         shutil.rmtree("shotten_images/")
@@ -54,17 +54,17 @@ def process_images():
     )
 
 
-def start_job():
+def start_job() -> None:
     post_text_discord("画像の送信を開始します")
     process_images()
 
 
-def end_job():
+def end_job() -> None:
     process_images()
     post_text_discord("画像の送信を終了します")
 
 
-def main():
+def main() -> None:
     # shotten_imagesフォルダが存在しなければ作成
     if not os.path.exists("shotten_images"):
         os.mkdir("shotten_images")
