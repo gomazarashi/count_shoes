@@ -58,21 +58,25 @@ def write_csv(now:datetime, count_heads_result:int) -> None:
             writer.writerows(data)
             print("ファイルを作成しました")
 
-        # ファイルが存在する場合は追記 ロックされている場合は書き込みが成功するまで繰り返す
+        # ファイルが存在する場合は追記 ロックされている場合は書き込みが成功するまで5回を上限に繰り返す
     else:
-        while True:
+        max_retries = 5
+        for i in range(max_retries):
             try:
                 with open(f"../data/headcount_{now_yyyymm}.csv", "a", encoding="utf-8", newline="") as f:
-                    data = [[now_str, count_heads_result]]
                     writer = csv.writer(f)
-                    writer.writerows(data)
+                    writer.writerow([now_str, count_heads_result])
                     print("ファイルを追記しました")
-                    # 書き込み成功したらループを抜ける　　
                     break
+            except PermissionError:
+                print("ファイルがロックされています")
+                if i == max_retries - 1:
+                    print("ファイルの追記に失敗しました")
+                else:
+                    sleep(10)
             except Exception as e:
-                print(f"エラーが発生しました: {e}")
-                print("5秒後に再試行します...")
-                sleep(5)
+                print(f"ファイルの追記中にエラーが発生しました: {e}")
+                break
     
 # csvを読み込み最後と最後から二番目の人数を取得し、差があればTrueを返す
 def is_people_changed(now:datetime)->bool:
