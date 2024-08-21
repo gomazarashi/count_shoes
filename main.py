@@ -55,16 +55,16 @@ def capture_and_process_image(now:datetime) -> None:
 
         image = images_list[0]
 
+        # 人数をカウント
+        count_heads_result = count_heads(
+            os.path.join("shotten_images", image), "./my_package/best.pt"
+        )
+        
         # 現在の時刻をDiscordとSlackに投稿
         post_current_time()
 
         # 画像をDiscordに投稿
         post_image_discord("shotten_images", image)
-
-        # 人数をカウント
-        count_heads_result = count_heads(
-            os.path.join("shotten_images", image), "./my_package/best.pt"
-        )
 
         # 画像を移動
         move_image("shotten_images", "posted_images", image)
