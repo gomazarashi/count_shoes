@@ -9,6 +9,8 @@ from my_package.post_webhook import (
     post_text_slack,
 )
 from my_package.count_heads import count_heads
+import csv
+from time import sleep
 
 
 def ensure_directories_exist(directories: list) -> None:
@@ -38,6 +40,53 @@ def post_current_time() -> None:
     current_time = datetime.now().strftime("%H:%M:%S")
     post_text_discord(f"現在の時刻は{current_time}です")
     post_text_slack("部室内人数通知システム", f"現在の時刻は{current_time}です")
+    
+def write_csv(now:datetime, count_heads_result:int) -> None:
+    """CSVファイルに日時と人数を書き込みます"""
+    now_yyyymm = now.strftime("%Y%m")
+    now_str = now.strftime("%Y%m%d%H%M")
+    
+    # ディレクトリが存在しない場合は作成
+    if not os.path.isdir("../data"):
+        os.makedirs("../data")
+
+    # ファイルが存在しない場合は作成
+    if not os.path.exists(f"../data/headcount_{now_yyyymm}.csv"):
+        with open(f"../data/headcount_{now_yyyymm}.csv", "w", encoding="utf-8", newline="") as f:
+            data = [["datetime", "count_heads_result"], [now_str, count_heads_result]]
+            writer = csv.writer(f)
+            writer.writerows(data)
+            print("ファイルを作成しました")
+
+        # ファイルが存在する場合は追記 ロックされている場合は書き込みが成功するまで繰り返す
+    else:
+        while True:
+            try:
+                with open(f"../data/headcount_{now_yyyymm}.csv", "a", encoding="utf-8", newline="") as f:
+                    data = [[now_str, count_heads_result]]
+                    writer = csv.writer(f)
+                    writer.writerows(data)
+                    print("ファイルを追記しました")
+                    # 書き込み成功したらループを抜ける　　
+                    break
+            except Exception as e:
+                print(f"エラーが発生しました: {e}")
+                print("5秒後に再試行します...")
+                sleep(5)
+    
+# csvを読み込み最後と最後から二番目の人数を取得し、差があればTrueを返す
+def is_people_changed(now:datetime)->bool:
+    now_yyyymm = now.strftime("%Y%m")
+    with open(f"../data/headcount_{now_yyyymm}.csv", "r", encoding="utf-8") as f:
+        reader = csv.reader(f)
+        rows = [row for row in reader]
+        if len(rows) < 3:
+            return True
+        last_count = int(rows[-1][1])
+        second_last_count = int(rows[-2][1])
+        return last_count != second_last_count # 人数が変わっていればTrueを返す
+    
+    
 
 
 def capture_and_process_image(now:datetime) -> None:
@@ -59,6 +108,14 @@ def capture_and_process_image(now:datetime) -> None:
         count_heads_result = count_heads(
             os.path.join("shotten_images", image), "./my_package/best.pt"
         )
+        
+        write_csv(now, count_heads_result)
+        
+        # 人数が変わっていなければ画像を破棄して終了
+        if not is_people_changed(now):
+            print("人数が変わっていません")
+            os.remove(os.path.join("shotten_images", image))
+            return
         
         # 現在の時刻をDiscordとSlackに投稿
         post_current_time()
