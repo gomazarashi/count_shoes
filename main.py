@@ -1,6 +1,5 @@
 import os
 import shutil
-from time import sleep
 from datetime import datetime
 from my_package.get_filename_list import get_filename_list
 from my_package.get_image import get_image
