@@ -55,19 +55,25 @@ def capture_and_process_image() -> None:
             return
 
         image = images_list[0]
+        
+        post_current_time()
 
         # 画像をDiscordに投稿
         post_image_discord("shotten_images", image)
 
         # 人数をカウント
-        count_heads_result = count_heads(os.path.join("shotten_images", image), "./my_package/best.pt")
+        count_heads_result = count_heads(
+            os.path.join("shotten_images", image), "./my_package/best.pt"
+        )
 
         # 画像を移動
         move_image("shotten_images", "posted_images", image)
 
         # 人数をDiscordとSlackに投稿
         post_text_discord(f"部室内の人数は{count_heads_result}人です")
-        post_text_slack("部室内人数通知システム", f"部室内の人数は{count_heads_result}人です")
+        post_text_slack(
+            "部室内人数通知システム", f"部室内の人数は{count_heads_result}人です"
+        )
 
     except Exception as e:
         print(f"画像処理中にエラーが発生しました: {e}")
@@ -79,7 +85,10 @@ def start_job() -> None:
         with open("./version.txt") as f:
             version = f.read()
         post_text_discord(f"現在のバージョンは{version}です\n画像の送信を開始します")
-        post_text_slack("部室内人数通知システム", f"現在のバージョンは{version}です\n画像の送信を開始します")
+        post_text_slack(
+            "部室内人数通知システム",
+            f"現在のバージョンは{version}です\n画像の送信を開始します",
+        )
         capture_and_process_image()
     except Exception as e:
         print(f"ジョブの開始中にエラーが発生しました: {e}")
@@ -103,8 +112,16 @@ def main() -> None:
     weekday = now.weekday()
 
     # 稼働時間の設定
-    start_time = now.replace(hour=8, minute=30) if weekday < 6 else now.replace(hour=9, minute=30)
-    end_time = now.replace(hour=22, minute=0) if weekday < 6 else now.replace(hour=18, minute=0)
+    start_time = (
+        now.replace(hour=8, minute=30)
+        if weekday < 6
+        else now.replace(hour=9, minute=30)
+    )
+    end_time = (
+        now.replace(hour=22, minute=0)
+        if weekday < 6
+        else now.replace(hour=18, minute=0)
+    )
 
     # 稼働時間に基づく処理
     if now < start_time or now > end_time:
