@@ -40,7 +40,7 @@ def post_current_time() -> None:
     post_text_slack("部室内人数通知システム", f"現在の時刻は{current_time}です")
 
 
-def capture_and_process_image() -> None:
+def capture_and_process_image(now:datetime) -> None:
     """画像を撮影し、人数をカウントして結果を投稿します"""
     try:
         # 画像を撮影して保存
@@ -54,7 +54,8 @@ def capture_and_process_image() -> None:
             return
 
         image = images_list[0]
-        
+
+        # 現在の時刻をDiscordとSlackに投稿
         post_current_time()
 
         # 画像をDiscordに投稿
@@ -78,7 +79,7 @@ def capture_and_process_image() -> None:
         print(f"画像処理中にエラーが発生しました: {e}")
 
 
-def start_job() -> None:
+def start_job(now:datetime) -> None:
     """ジョブの開始を通知し、画像処理を実行します"""
     try:
         with open("./version.txt") as f:
@@ -88,15 +89,15 @@ def start_job() -> None:
             "部室内人数通知システム",
             f"現在のバージョンは{version}です\n画像の送信を開始します",
         )
-        capture_and_process_image()
+        capture_and_process_image(now)
     except Exception as e:
         print(f"ジョブの開始中にエラーが発生しました: {e}")
 
 
-def end_job() -> None:
+def end_job(now:datetime) -> None:
     """ジョブの終了を通知し、画像処理を実行します"""
     try:
-        capture_and_process_image()
+        capture_and_process_image(now)
         post_text_discord("画像の送信を終了します")
         post_text_slack("部室内人数通知システム", "画像の送信を終了します")
     except Exception as e:
@@ -126,11 +127,11 @@ def main() -> None:
     if now < start_time or now > end_time:
         print("稼働時間外です")
     elif now == start_time:
-        start_job()
+        start_job(now)
     elif now == end_time:
-        end_job()
+        end_job(now)
     else:
-        capture_and_process_image()
+        capture_and_process_image(now)
 
 
 if __name__ == "__main__":
