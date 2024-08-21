@@ -40,19 +40,22 @@ def post_current_time() -> None:
     current_time = datetime.now().strftime("%H:%M:%S")
     post_text_discord(f"現在の時刻は{current_time}です")
     post_text_slack("部室内人数通知システム", f"現在の時刻は{current_time}です")
-    
-def write_csv(now:datetime, count_heads_result:int) -> None:
+
+
+def write_csv(now: datetime, count_heads_result: int) -> None:
     """CSVファイルに日時と人数を書き込みます"""
     now_yyyymm = now.strftime("%Y%m")
     now_str = now.strftime("%Y%m%d%H%M")
-    
+
     # ディレクトリが存在しない場合は作成
     if not os.path.isdir("../data"):
         os.makedirs("../data")
 
     # ファイルが存在しない場合は作成
     if not os.path.exists(f"../data/headcount_{now_yyyymm}.csv"):
-        with open(f"../data/headcount_{now_yyyymm}.csv", "w", encoding="utf-8", newline="") as f:
+        with open(
+            f"../data/headcount_{now_yyyymm}.csv", "w", encoding="utf-8", newline=""
+        ) as f:
             data = [["datetime", "count_heads_result"], [now_str, count_heads_result]]
             writer = csv.writer(f)
             writer.writerows(data)
@@ -63,7 +66,12 @@ def write_csv(now:datetime, count_heads_result:int) -> None:
         max_retries = 5
         for i in range(max_retries):
             try:
-                with open(f"../data/headcount_{now_yyyymm}.csv", "a", encoding="utf-8", newline="") as f:
+                with open(
+                    f"../data/headcount_{now_yyyymm}.csv",
+                    "a",
+                    encoding="utf-8",
+                    newline="",
+                ) as f:
                     writer = csv.writer(f)
                     writer.writerow([now_str, count_heads_result])
                     print("ファイルを追記しました")
@@ -77,9 +85,10 @@ def write_csv(now:datetime, count_heads_result:int) -> None:
             except Exception as e:
                 print(f"ファイルの追記中にエラーが発生しました: {e}")
                 break
-    
+
+
 # csvを読み込み最後と最後から二番目の人数を取得し、差があればTrueを返す
-def is_people_changed(now:datetime)->bool:
+def is_people_changed(now: datetime) -> bool:
     now_yyyymm = now.strftime("%Y%m")
     with open(f"../data/headcount_{now_yyyymm}.csv", "r", encoding="utf-8") as f:
         reader = csv.reader(f)
@@ -88,12 +97,10 @@ def is_people_changed(now:datetime)->bool:
             return True
         last_count = int(rows[-1][1])
         second_last_count = int(rows[-2][1])
-        return last_count != second_last_count # 人数が変わっていればTrueを返す
-    
-    
+        return last_count != second_last_count  # 人数が変わっていればTrueを返す
 
 
-def capture_and_process_image(now:datetime) -> None:
+def capture_and_process_image(now: datetime) -> None:
     """画像を撮影し、人数をカウントして結果を投稿します"""
     try:
         # 画像を撮影して保存
@@ -112,15 +119,15 @@ def capture_and_process_image(now:datetime) -> None:
         count_heads_result = count_heads(
             os.path.join("shotten_images", image), "./my_package/best.pt"
         )
-        
+
         write_csv(now, count_heads_result)
-        
+
         # 人数が変わっていなければ画像を破棄して終了
         if not is_people_changed(now):
             print("人数が変わっていません")
             os.remove(os.path.join("shotten_images", image))
             return
-        
+
         # 現在の時刻をDiscordとSlackに投稿
         post_current_time()
 
@@ -140,7 +147,7 @@ def capture_and_process_image(now:datetime) -> None:
         print(f"画像処理中にエラーが発生しました: {e}")
 
 
-def start_job(now:datetime) -> None:
+def start_job(now: datetime) -> None:
     """ジョブの開始を通知し、画像処理を実行します"""
     try:
         with open("./version.txt") as f:
@@ -155,7 +162,7 @@ def start_job(now:datetime) -> None:
         print(f"ジョブの開始中にエラーが発生しました: {e}")
 
 
-def end_job(now:datetime) -> None:
+def end_job(now: datetime) -> None:
     """ジョブの終了を通知し、画像処理を実行します"""
     try:
         capture_and_process_image(now)
