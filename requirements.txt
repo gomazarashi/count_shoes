@@ -2,3 +2,4 @@ opencv-python==4.8.1.78
 python-dotenv==1.0.0
 discordwebhook==1.0.3
 ultralytics==8.1.44
+torch==1.13.1
