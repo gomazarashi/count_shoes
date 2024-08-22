@@ -155,7 +155,7 @@ def start_job(now: datetime) -> None:
         post_text_discord(f"現在のバージョンは{version}です\n画像の送信を開始します")
         post_text_slack(
             "部室内人数通知システム",
-            f"現在のバージョンは{version}です\n画像の送信を開始します",
+            f"現在のバージョンは{version}です\n通知の送信を開始します",
         )
         capture_and_process_image(now)
     except Exception as e:
@@ -167,7 +167,7 @@ def end_job(now: datetime) -> None:
     try:
         capture_and_process_image(now)
         post_text_discord("画像の送信を終了します")
-        post_text_slack("部室内人数通知システム", "画像の送信を終了します")
+        post_text_slack("部室内人数通知システム", "通知の送信を終了します")
     except Exception as e:
         print(f"ジョブの終了中にエラーが発生しました: {e}")
 
